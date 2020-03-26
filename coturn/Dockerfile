@@ -6,7 +6,10 @@ ENV BUILD_PREFIX /usr/local/src
 # Install build dependencies
 RUN export DEBIAN_FRONTEND=noninteractive && \
 	apt-get update && \
-	apt-get install -y build-essential git debhelper dpkg-dev libssl-dev libevent-dev sqlite3 libsqlite3-dev postgresql-client libpq-dev default-mysql-client default-libmysqlclient-dev libhiredis-dev libmongoc-dev libbson-dev
+	apt-get install -y build-essential git debhelper \
+	dpkg-dev libssl-dev libevent-dev sqlite3 libsqlite3-dev \
+	postgresql-client libpq-dev default-mysql-client \
+	default-libmysqlclient-dev libhiredis-dev libmongoc-dev libbson-dev
 
 # Clone coTURN
 WORKDIR ${BUILD_PREFIX}
@@ -34,7 +37,11 @@ COPY --from=coturn-build ${BUILD_PREFIX}/coturn/turndb ${INSTALL_PREFIX}/turndb
 # Install lib dependencies
 RUN export DEBIAN_FRONTEND=noninteractive && \
 	apt-get update && \
-	apt-get install -y libc6>=2.15 libevent-core-2.1-6>=libevent-core-2.1-6 libevent-extra-2.1-6>=2.1.8-stable-4 libevent-openssl-2.1-6>=2.1.8-stable-4 libevent-pthreads-2.1-6>=2.1.8-stable-4 libhiredis0.14>=0.14.0 libmariadbclient-dev>=10.3.17 libpq5>=8.4~ libsqlite3-0>=3.6.0 libssl1.1>=1.1.0 libmongoc-1.0 libbson-1.0
+	apt-get install -y libc6>=2.15 libevent-core-2.1-6>=libevent-core-2.1-6 \
+	libevent-extra-2.1-6>=2.1.8-stable-4 libevent-openssl-2.1-6>=2.1.8-stable-4 \
+	libevent-pthreads-2.1-6>=2.1.8-stable-4 libhiredis0.14>=0.14.0 \
+	libmariadbclient-dev>=10.3.17 libpq5>=8.4~ libsqlite3-0>=3.6.0 \
+	libssl1.1>=1.1.0 libmongoc-1.0 libbson-1.0
 RUN apt-get install -y default-mysql-client postgresql-client redis-tools
 
 # Install MongoDB
