@@ -1,0 +1,44 @@
+version: "3.4"
+services:
+  mysql:
+    network_mode: host
+    build:
+      context: ./mysql
+    container_name: mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    volumes:
+      - database:/var/lib/mysql/data
+    env_file: 
+      - mysql/mysql.env
+
+  coturn:
+    network_mode: host
+    build:
+      context: ./coturn
+    container_name: turn
+    restart: always
+    volumes:
+      - ${PWD}/coturn/turnserver.conf:/etc/turnserver.conf
+      - /etc/letsencrypt/live/turn1.bptest.cloud/privkey.pem:/etc/ssl/private/privkey.pem
+      - /etc/letsencrypt/live/turn1.bptest.cloud/fullchain.pem:/etc/ssl/certs/cert.pem
+    ports:
+## STUN/TURN SSL
+      - "5349:5349"
+      - "5349:5349/udp"
+      - "5350:5350"
+      - "5350:5350/udp"
+      - "443:443"
+      - "443:443/udp"
+# Relay Ports
+      - "49152-65535:49152-65535"
+      - "49152-65535:49152-65535/udp"
+    depends_on:
+      - mysql
+    env_file:
+      - coturn/coturn.env
+      - mysql/mysql.env
+
+volumes:
+  database:
