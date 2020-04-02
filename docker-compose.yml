@@ -9,7 +9,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - database:/var/lib/mysql/data
+      - mydata:/var/lib/mysql
     env_file: 
       - mysql/mysql.env
 
@@ -41,4 +41,9 @@ services:
       - mysql/mysql.env
 
 volumes:
-  database:
+  mydata:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /tmp/mydata
